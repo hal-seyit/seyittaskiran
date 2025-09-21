@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>Şık PDF Görüntüleme</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #141e30, #243b55);
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      min-height: 100vh;
+      color: #fff;
+    }
+
+    .container {
+      background: rgba(0,0,0,0.6);
+      border-radius: 20px;
+      padding: 20px;
+      max-width: 400px;
+      width: 90%;
+      text-align: center;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.7);
+      transform: scale(0.8);
+      opacity: 0;
+      animation: fadeInScale 0.8s ease-out forwards;
+      margin-top: 30px;
+    }
+
+    @keyframes fadeInScale {
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    .container img {
+      width: 100%;
+      border-radius: 15px;
+      margin-bottom: 20px;
+      box-shadow: 0 8px 15px rgba(0,0,0,0.5);
+    }
+
+    .btn {
+      display: block;
+      width: 100%;
+      margin: 12px 0;
+      padding: 15px;
+      background: #111;
+      color: #fff;
+      text-decoration: none;
+      font-size: 18px;
+      border-radius: 14px;
+      position: relative;
+      z-index: 0;
+      overflow: hidden;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    }
+
+    .btn:hover {
+      transform: scale(1.05);
+      background: #222;
+      box-shadow: 0 0 20px rgba(255,255,255,0.5), 0 8px 15px rgba(0,0,0,0.5);
+    }
+
+    .btn::before {
+      content: "";
+      position: absolute;
+      top: -2px;
+      left: -2px;
+      right: -2px;
+      bottom: -2px;
+      z-index: -2;
+      border-radius: 14px;
+      background: linear-gradient(270deg, #ff0080, #7928ca, #2afadf, #ff8c00, #ff0080);
+      background-size: 600% 600%;
+      animation: animateBorder 8s linear infinite;
+    }
+
+    @keyframes animateBorder {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .btn span {
+      position: absolute;
+      border-radius: 50%;
+      transform: scale(0);
+      background: rgba(255,255,255,0.6);
+      animation: ripple 0.6s linear;
+      pointer-events: none;
+    }
+
+    @keyframes ripple {
+      to {
+        transform: scale(4);
+        opacity: 0;
+      }
+    }
+
+    /* PDF iframe stili */
+    .pdf-viewer {
+      margin-top: 20px;
+      width: 90%;
+      max-width: 800px;
+      height: 500px;
+      border: 2px solid #fff;
+      border-radius: 15px;
+      display: none;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+    }
+
+    @media (max-width: 500px) {
+      .pdf-viewer {
+        height: 300px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <img src="resim.jpg" alt="Kapak Resmi">
+
+    <!-- Online Oku butonu -->
+    <button class="btn" id="openPdf">📖 Online Oku</button>
+
+    <!-- Dosyayı İndir butonu -->
+    <a href="hâl.pdf" download class="btn">⬇️ Dosyayı İndir</a>
+  </div>
+
+  <!-- PDF görüntüleme alanı -->
+  <iframe id="pdfViewer" class="pdf-viewer"></iframe>
+
+  <script>
+    // Ripple efekti
+    document.querySelectorAll('.btn').forEach(btn => {
+      btn.addEventListener('click', function(e) {
+        let circle = document.createElement('span');
+        let x = e.clientX - e.target.getBoundingClientRect().left;
+        let y = e.clientY - e.target.getBoundingClientRect().top;
+        circle.style.left = x + 'px';
+        circle.style.top = y + 'px';
+        this.appendChild(circle);
+        setTimeout(() => circle.remove(), 600);
+      });
+    });
+
+    // PDF açma işlemi
+    const openBtn = document.getElementById('openPdf');
+    const pdfViewer = document.getElementById('pdfViewer');
+
+    openBtn.addEventListener('click', () => {
+      pdfViewer.src = 'hâl.pdf';
+      pdfViewer.style.display = 'block';
+      pdfViewer.scrollIntoView({behavior: 'smooth'});
+    });
+  </script>
+</body>
+</html>
